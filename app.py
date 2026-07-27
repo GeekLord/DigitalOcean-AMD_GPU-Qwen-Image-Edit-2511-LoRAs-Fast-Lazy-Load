@@ -347,13 +347,15 @@ def infer(
 
     if lora_adapter == "Passport-Photo":
         passport_suffix = (
-            ", passport photo style, front view centered headshot, clean light neutral background, "
-            "uniform studio lighting, crisp sharp facial details, preserving facial identity"
+            ", standard 3.5:4.5 aspect ratio passport photo, medium shot showing head, complete hair, neck, shoulders, and upper torso, "
+            "face centered with headroom space above head, clean plain light neutral studio background, uniform studio lighting, "
+            "crisp sharp facial details, preserving exact facial identity and hair"
         )
         if "passport" not in prompt.lower():
             prompt = prompt + passport_suffix
-
-    width, height = update_dimensions_on_upload(pil_images[0])
+        width, height = 784, 1008
+    else:
+        width, height = update_dimensions_on_upload(pil_images[0])
 
     try:
         result_image = pipe(
@@ -1194,12 +1196,26 @@ function watchOutputs() {
                     const baseName = lastDot > 0 ? rawName.substring(0, lastDot) : rawName;
                     downloadName = baseName + '.png';
                 }
-                const a = document.createElement('a');
-                a.href = img.src;
-                a.download = downloadName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                fetch(img.src)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = downloadName;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    })
+                    .catch(() => {
+                        const a = document.createElement('a');
+                        a.href = img.src;
+                        a.download = downloadName;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    });
             }
         });
     }
