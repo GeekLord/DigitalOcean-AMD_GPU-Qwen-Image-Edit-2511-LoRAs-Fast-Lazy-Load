@@ -147,12 +147,20 @@ ADAPTER_SPECS = {
         "weights": "QIE-2511-Cinematic-FlatLog-Control-3200.safetensors",
         "adapter_name": "flat-log",
     },
+    "Passport-Photo": {
+        "repo": "prithivMLmods/Qwen-Image-Edit-2511-Passport-Photo",
+        "weights": "Passport_Photo_20.safetensors",
+        "adapter_name": "passport-photo",
+        "fallback_repo": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
+        "fallback_weights": "URP_20.safetensors",
+    },
 }
 
 LOADED_ADAPTERS: set = set()
 ADAPTER_NAMES = list(ADAPTER_SPECS.keys())
 
 EXAMPLES_CONFIG = [
+    {"images": ["examples/HRP.jpg"],                        "prompt": "Convert into a high-quality, passport-compatible photograph with a neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity.", "lora": "Passport-Photo"},
     {"images": ["examples/B.jpg"],                          "prompt": "Transform into anime.",                                                                                           "lora": "Photo-to-Anime"},
     {"images": ["examples/HRP.jpg"],                        "prompt": "Transform into a hyper-realistic face portrait.",                                                                 "lora": "Hyper-Realistic-Portrait"},
     {"images": ["examples/A.jpeg"],                         "prompt": "Rotate the camera 45 degrees to the right.",                                                                      "lora": "Multiple-Angles"},
@@ -320,7 +328,15 @@ def infer(
             pipe.load_lora_weights(spec["repo"], weight_name=spec["weights"], adapter_name=adapter_name)
             LOADED_ADAPTERS.add(adapter_name)
         except Exception as e:
-            raise gr.Error(f"Failed to load adapter {lora_adapter}: {e}")
+            if "fallback_repo" in spec:
+                print(f"Primary repo load failed for {lora_adapter} ({e}). Attempting fallback repo: {spec['fallback_repo']}")
+                try:
+                    pipe.load_lora_weights(spec["fallback_repo"], weight_name=spec["fallback_weights"], adapter_name=adapter_name)
+                    LOADED_ADAPTERS.add(adapter_name)
+                except Exception as fb_err:
+                    raise gr.Error(f"Failed to load adapter {lora_adapter}: {fb_err}")
+            else:
+                raise gr.Error(f"Failed to load adapter {lora_adapter}: {e}")
     else:
         print(f"--- Adapter {lora_adapter} already loaded. ---")
 
@@ -334,6 +350,19 @@ def infer(
         "worst quality, low quality, bad anatomy, bad hands, text, error, missing fingers, "
         "extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry"
     )
+
+    if lora_adapter == "Passport-Photo":
+        passport_suffix = (
+            ", high-quality passport photo, centered front-facing headshot pose, neutral facial expression, "
+            "clean uniform solid light studio background, sharp facial features, crisp focus, flawless skin texture, "
+            "professional studio lighting, exact facial identity and eye shape preserved"
+        )
+        if "passport" not in prompt.lower():
+            prompt = prompt + passport_suffix
+        negative_prompt += (
+            ", blurry face, out of focus, side profile, tilted head, harsh shadows, dark background, "
+            "distorted face, altered facial identity, noisy background, casual posture, closed eyes, smile with teeth, motion blur"
+        )
     width, height = update_dimensions_on_upload(pil_images[0])
 
     try:
@@ -1357,6 +1386,7 @@ with gr.Blocks() as demo:
           <div class="suggestions-section">
             <div class="suggestions-title">Quick Prompts</div>
             <div class="suggestions-wrap">
+              <button class="suggestion-chip" onclick="window.__setPrompt('Convert into a high-quality passport photo with neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity.')">Passport Photo</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Transform into anime.')">Anime</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Convert it to black and white.')">B&amp;W</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Add cinematic lighting with warm orange tones and film grain.')">Cinematic</button>

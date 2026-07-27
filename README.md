@@ -8,7 +8,8 @@ Using a **Lazy Loading** design for LoRA adapters, the system dynamically downlo
 
 ### **Key Features**
 
-* **Lazy-Loaded Adapter Registry:** On-demand downloading and weight-fusing for 11+ specialized LoRA adapters (e.g., *Photo-to-Anime*, *Multiple-Angles*, *Light-Restoration*, *Relight*, *Multi-Angle-Lighting*, *Edit-Skin*, *Next-Scene*, *Flat-Log*, *Upscale-Image*, *Upscale2K*, and *Dotted-Illustration*).
+* **Lazy-Loaded Adapter Registry:** On-demand downloading and weight-fusing for specialized LoRA adapters (e.g., *Passport-Photo*, *Photo-to-Anime*, *Multiple-Angles*, *Light-Restoration*, *Relight*, *Multi-Angle-Lighting*, *Edit-Skin*, *Next-Scene*, *Flat-Log*, *Upscale-Image*, *Upscale2K*, and *Dotted-Illustration*).
+* **Passport Photo Preset:** Engineered to transform low-quality, blurry, angled, or poorly lit portrait images into standardized, high-quality passport-compatible photos with uniform studio background, front-facing pose, and exact facial identity preservation.
 * **Flash Attention 3 (FA3) Acceleration:** Hooks natively into the `QwenDoubleStreamAttnProcessorFA3` processor layer to accelerate cross-attention inference phases while reducing active GPU memory consumption.
 * **Text-Guided Image Editing:** Offers camera angle rotations, shadow removal, uniform studio relighting, skin detail refinement, scene propagation, and 4K upscaling.
 * **Polished Dark-Mode Interface:** A modern web UI with custom JavaScript event listeners, drag-and-drop file uploaders, live toast notifications, and animated status indicators.
