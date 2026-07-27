@@ -148,9 +148,9 @@ ADAPTER_SPECS = {
         "adapter_name": "flat-log",
     },
     "Passport-Photo": {
-        "repo": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
-        "weights": "URP_20.safetensors",
-        "adapter_name": "passport-photo",
+        "repo": "prithivMLmods/QIE-2511-Studio-DeLight",
+        "weights": "QIE-2511-Studio-DeLight-5000.safetensors",
+        "adapter_name": "studio-delight",
     },
 }
 
@@ -344,34 +344,21 @@ def infer(
         seed = random.randint(0, MAX_SEED)
 
     generator = torch.Generator(device=device).manual_seed(seed)
-    negative_prompt = (
-        "worst quality, low quality, bad anatomy, bad hands, text, error, missing fingers, "
-        "extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry"
-    )
 
     if lora_adapter == "Passport-Photo":
         passport_suffix = (
-            ", high-quality passport photo, centered front-facing headshot pose, neutral facial expression, "
-            "clean uniform solid light studio background, sharp facial features, crisp focus, flawless skin texture, "
-            "professional studio lighting, exact facial identity and eye shape preserved"
+            ", passport photo style, front view centered headshot, clean light neutral background, "
+            "uniform studio lighting, crisp sharp facial details, preserving facial identity"
         )
         if "passport" not in prompt.lower():
             prompt = prompt + passport_suffix
-        negative_prompt += (
-            ", blurry face, out of focus, side profile, tilted head, harsh shadows, dark background, "
-            "distorted face, altered facial identity, noisy background, casual posture, closed eyes, smile with teeth, motion blur"
-        )
-        if guidance_scale <= 1.0:
-            guidance_scale = 3.5
-    elif negative_prompt and guidance_scale <= 1.0:
-        guidance_scale = 3.0
+
     width, height = update_dimensions_on_upload(pil_images[0])
 
     try:
         result_image = pipe(
             image=pil_images,
             prompt=prompt,
-            negative_prompt=negative_prompt,
             height=height,
             width=width,
             num_inference_steps=steps,
