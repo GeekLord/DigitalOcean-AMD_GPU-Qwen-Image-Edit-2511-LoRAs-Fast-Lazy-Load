@@ -158,7 +158,7 @@ LOADED_ADAPTERS: set = set()
 ADAPTER_NAMES = list(ADAPTER_SPECS.keys())
 
 EXAMPLES_CONFIG = [
-    {"images": ["examples/HRP.jpg"],                        "prompt": "Convert into a high-quality, passport-compatible photograph with a neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity.", "lora": "Passport-Photo"},
+    {"images": ["examples/HRP.jpg"],                        "prompt": "Convert into a high-quality, passport-compatible photograph with a neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity and hair.", "lora": "Passport-Photo"},
     {"images": ["examples/B.jpg"],                          "prompt": "Transform into anime.",                                                                                           "lora": "Photo-to-Anime"},
     {"images": ["examples/HRP.jpg"],                        "prompt": "Transform into a hyper-realistic face portrait.",                                                                 "lora": "Hyper-Realistic-Portrait"},
     {"images": ["examples/A.jpeg"],                         "prompt": "Rotate the camera 45 degrees to the right.",                                                                      "lora": "Multiple-Angles"},
@@ -1386,7 +1386,7 @@ with gr.Blocks() as demo:
           <div class="suggestions-section">
             <div class="suggestions-title">Quick Prompts</div>
             <div class="suggestions-wrap">
-              <button class="suggestion-chip" onclick="window.__setPrompt('Convert into a high-quality passport photo with neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity.')">Passport Photo</button>
+              <button class="suggestion-chip" onclick="window.__setPrompt('Convert into a high-quality passport photo with neutral studio background, front-facing pose, crisp facial details, and uniform lighting while preserving exact facial identity and hair.')">Passport Photo</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Transform into anime.')">Anime</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Convert it to black and white.')">B&amp;W</button>
               <button class="suggestion-chip" onclick="window.__setPrompt('Add cinematic lighting with warm orange tones and film grain.')">Cinematic</button>
