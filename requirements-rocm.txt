@@ -1,4 +1,5 @@
---extra-index-url https://download.pytorch.org/whl/rocm6.2
+--index-url https://download.pytorch.org/whl/rocm6.2
+--extra-index-url https://pypi.org/simple
 torch
 torchvision
 transformers==5.14.1

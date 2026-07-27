@@ -64,7 +64,8 @@ fi
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip setuptools wheel
-pip install -r requirements-rocm.txt
+pip uninstall -y torch torchvision || true
+pip install --no-cache-dir -r requirements-rocm.txt
 
 # ------------------------------------------------------------------------------
 # 5. Create Systemd Service for Auto-Start
