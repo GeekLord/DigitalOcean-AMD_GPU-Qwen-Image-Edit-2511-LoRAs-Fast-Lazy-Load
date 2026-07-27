@@ -148,11 +148,9 @@ ADAPTER_SPECS = {
         "adapter_name": "flat-log",
     },
     "Passport-Photo": {
-        "repo": "prithivMLmods/Qwen-Image-Edit-2511-Passport-Photo",
-        "weights": "Passport_Photo_20.safetensors",
+        "repo": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
+        "weights": "URP_20.safetensors",
         "adapter_name": "passport-photo",
-        "fallback_repo": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
-        "fallback_weights": "URP_20.safetensors",
     },
 }
 
@@ -363,6 +361,10 @@ def infer(
             ", blurry face, out of focus, side profile, tilted head, harsh shadows, dark background, "
             "distorted face, altered facial identity, noisy background, casual posture, closed eyes, smile with teeth, motion blur"
         )
+        if guidance_scale <= 1.0:
+            guidance_scale = 3.5
+    elif negative_prompt and guidance_scale <= 1.0:
+        guidance_scale = 3.0
     width, height = update_dimensions_on_upload(pil_images[0])
 
     try:

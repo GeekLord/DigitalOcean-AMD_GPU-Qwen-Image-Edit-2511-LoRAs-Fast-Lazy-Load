@@ -133,10 +133,11 @@ pip install --upgrade pip
 ```
 
 **2. Install ROCm PyTorch & Dependencies**
-Uninstall any default CUDA PyTorch packages and install PyTorch for ROCm:
+Uninstall any default CUDA PyTorch packages, install ROCm PyTorch, then install the remaining project dependencies:
 ```bash
 pip uninstall -y torch torchvision
-pip install --no-cache-dir -r requirements-rocm.txt
+pip install torch torchvision --index-url https://download.pytorch.org/whl/rocm6.2
+pip install -r requirements-rocm.txt
 ```
 
 **3. Allow Port 7860 in Firewall (DigitalOcean)**
