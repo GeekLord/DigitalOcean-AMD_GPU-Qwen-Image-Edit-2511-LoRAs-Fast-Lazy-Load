@@ -69,7 +69,7 @@ To set up the Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load environment locally, con
 **Step 2 — Clone the repository**
 
 ```bash
-git clone https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git
+git clone https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git
 cd Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load
 
 ```
@@ -187,6 +187,6 @@ Once the web deployment initializes, open your browser to the output URL in your
 
 ### **Links and Source**
 
-* **GitHub Repository:** [https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git](https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git)
+* **GitHub Repository:** [https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git](https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git)
 * **Hugging Face Live Space:** [https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast](https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast)
 * **License:** [Apache License 2.0](https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load/blob/main/LICENSE)

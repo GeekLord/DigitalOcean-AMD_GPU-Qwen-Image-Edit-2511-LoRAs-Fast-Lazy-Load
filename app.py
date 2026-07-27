@@ -1328,7 +1328,7 @@ with gr.Blocks() as demo:
           <span class="app-badge fast">4-Step Fast</span>
         </div>
 
-        <a href="https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load"
+        <a href="https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git"
            target="_blank"
            class="gh-btn">
           {GITHUB_SVG}

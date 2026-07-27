@@ -49,7 +49,7 @@ chmod 777 "${SCRATCH_DIR}"
 # ------------------------------------------------------------------------------
 echo "=== [5/6] Deploying Qwen-Image-Edit Project & Installing ROCm PyTorch ==="
 INSTALL_DIR="/opt/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load"
-REPO_URL="https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git"
+REPO_URL="https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git"
 
 if [ -d "${INSTALL_DIR}" ]; then
     echo "Directory ${INSTALL_DIR} exists, pulling latest..."
