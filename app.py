@@ -1542,5 +1542,6 @@ if __name__ == "__main__":
         mcp_server=True,
         ssr_mode=False,
         show_error=True,
+        share=True,
         allowed_paths=["examples"],
     )
