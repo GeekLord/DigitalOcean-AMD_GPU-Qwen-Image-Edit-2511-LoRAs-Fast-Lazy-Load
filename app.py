@@ -821,6 +821,190 @@ body:not(.dark) #custom-run-btn *{color:#ffffff!important;-webkit-text-fill-colo
     .app-main-right{width:100%}
     .app-main-left{border-right:none;border-bottom:1px solid #27272a}
 }
+
+/* ── Output Zoom Badge & Cursor ── */
+.output-frame .out-body{cursor:pointer}
+.output-frame .out-body img.modern-out-img{cursor:zoom-in;transition:transform .2s ease,filter .2s ease}
+.output-frame .out-body:hover img.modern-out-img{filter:brightness(1.04)}
+.out-zoom-badge{
+    position:absolute;bottom:12px;right:12px;background:rgba(9,9,11,.85);
+    border:1px solid rgba(30,144,255,.4);border-radius:20px;padding:5px 12px;
+    font-size:12px;font-weight:600;color:#47A3FF;display:none;align-items:center;
+    gap:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    box-shadow:0 4px 12px rgba(0,0,0,.5);transition:all .2s ease;z-index:10;user-select:none;
+}
+.out-zoom-badge.visible{display:inline-flex}
+.output-frame .out-body:hover .out-zoom-badge.visible{
+    background:rgba(30,144,255,.9);color:#ffffff!important;border-color:#1E90FF;transform:translateY(-2px);
+}
+.out-zoom-badge svg{width:14px;height:14px;stroke:currentColor}
+
+/* ── Modal Window Popup ── */
+.img-modal-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(9,9,11,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    z-index:99999;display:flex;align-items:center;justify-content:center;
+    padding:20px;opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.img-modal-overlay.active{opacity:1;pointer-events:auto}
+.img-modal-card{
+    width:95vw;height:92vh;max-width:1500px;background:#121215;
+    border:1px solid #27272a;border-radius:16px;display:flex;flex-direction:column;
+    overflow:hidden;box-shadow:0 25px 60px -15px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05);
+    transform:scale(.96);transition:transform .25s cubic-bezier(.16,1,.3,1);
+}
+.img-modal-overlay.active .img-modal-card{transform:scale(1)}
+
+/* Modal Header */
+.img-modal-header{
+    background:#18181b;border-bottom:1px solid #27272a;padding:10px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    flex-wrap:wrap;user-select:none;
+}
+.modal-header-left{display:flex;align-items:center;gap:12px}
+.modal-title{font-size:15px;font-weight:700;color:#ffffff;display:flex;align-items:center;gap:8px}
+.modal-title-badge{
+    background:rgba(30,144,255,.15);color:#47A3FF;font-size:11px;
+    padding:2px 8px;border-radius:4px;border:1px solid rgba(30,144,255,.3);
+    font-family:'JetBrains Mono',monospace;
+}
+
+/* Tabs */
+.modal-tabs{
+    display:flex;background:#09090b;padding:3px;
+    border-radius:8px;border:1px solid #27272a;gap:2px;
+}
+.modal-tab-btn{
+    padding:5px 14px;font-size:12px;font-weight:600;color:#71717a;
+    background:transparent;border:none;border-radius:6px;cursor:pointer;
+    transition:all .15s ease;display:flex;align-items:center;gap:6px;
+    font-family:'Inter',sans-serif;
+}
+.modal-tab-btn:hover{color:#e4e4e7;background:rgba(255,255,255,.05)}
+.modal-tab-btn.active{
+    background:#1E90FF;color:#ffffff!important;box-shadow:0 2px 8px rgba(30,144,255,.4);
+}
+
+/* Header Controls */
+.modal-header-right{display:flex;align-items:center;gap:12px}
+.modal-orig-select{
+    background:#09090b;border:1px solid #3f3f46;color:#e4e4e7;
+    border-radius:6px;padding:4px 10px;font-size:12px;font-weight:500;
+    outline:none;cursor:pointer;font-family:'Inter',sans-serif;
+}
+.zoom-controls{
+    display:flex;align-items:center;background:#09090b;
+    border:1px solid #27272a;border-radius:8px;padding:2px;gap:2px;
+}
+.zoom-btn{
+    width:28px;height:28px;background:transparent;border:none;
+    color:#a1a1aa;font-size:14px;font-weight:600;border-radius:5px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:all .15s;
+}
+.zoom-btn:hover{background:rgba(255,255,255,.1);color:#ffffff}
+.zoom-text-btn{padding:0 8px;width:auto;font-size:11px;font-family:'JetBrains Mono',monospace}
+.modal-close-btn{
+    width:32px;height:32px;background:rgba(255,255,255,.06);
+    border:1px solid #27272a;border-radius:8px;color:#a1a1aa;
+    font-size:16px;cursor:pointer;display:flex;align-items:center;
+    justify-content:center;transition:all .15s;
+}
+.modal-close-btn:hover{background:#ef4444;color:#ffffff;border-color:#ef4444}
+
+/* Modal Body */
+.img-modal-body{
+    flex:1;position:relative;background:#09090b;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;user-select:none;
+}
+
+/* Split Compare View */
+.modal-split-container{
+    position:absolute;top:0;left:0;right:0;bottom:0;
+    overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+.split-view-wrapper{
+    position:relative;max-width:100%;max-height:100%;
+    display:flex;align-items:center;justify-content:center;cursor:grab;
+}
+.split-view-wrapper:active{cursor:grabbing}
+.split-img-base{
+    display:block;max-width:100%;max-height:80vh;object-fit:contain;pointer-events:none;
+}
+.split-img-overlay-wrap{
+    position:absolute;top:0;left:0;bottom:0;overflow:hidden;
+    pointer-events:none;width:50%;border-right:2px solid #1E90FF;
+    box-shadow:4px 0 15px rgba(0,0,0,.5);
+}
+.split-img-overlay{
+    position:absolute;top:0;left:0;height:100%;max-width:none;object-fit:contain;
+}
+.split-divider-handle{
+    position:absolute;top:50%;right:-16px;transform:translateY(-50%);
+    width:32px;height:32px;background:#1E90FF;border:2px solid #ffffff;
+    border-radius:50%;box-shadow:0 0 12px rgba(30,144,255,.8);
+    display:flex;align-items:center;justify-content:center;color:#ffffff;
+    font-size:13px;font-weight:700;cursor:ew-resize;pointer-events:auto;
+}
+.split-tag{
+    position:absolute;bottom:16px;padding:4px 10px;
+    background:rgba(9,9,11,.85);border:1px solid rgba(255,255,255,.15);
+    border-radius:6px;font-size:12px;font-weight:600;color:#e4e4e7;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);pointer-events:none;z-index:5;
+}
+.split-tag.left{left:16px;border-left:3px solid #1E90FF}
+.split-tag.right{right:16px;border-right:3px solid #10b981}
+
+/* Side-by-Side View */
+.modal-side-container{
+    display:flex;width:100%;height:100%;gap:12px;padding:12px;box-sizing:border-box;
+}
+.side-pane{
+    flex:1;background:#121215;border:1px solid #27272a;
+    border-radius:10px;display:flex;flex-direction:column;overflow:hidden;position:relative;
+}
+.side-pane-header{
+    padding:8px 14px;background:#18181b;border-bottom:1px solid #27272a;
+    font-size:12px;font-weight:600;color:#a1a1aa;display:flex;align-items:center;
+    justify-content:space-between;
+}
+.side-pane-body{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;position:relative;cursor:grab;
+}
+.side-pane-body:active{cursor:grabbing}
+.side-pane-body img{max-width:100%;max-height:100%;object-fit:contain}
+
+/* Single View */
+.modal-single-container{
+    width:100%;height:100%;display:flex;align-items:center;
+    justify-content:center;overflow:hidden;position:relative;cursor:grab;
+}
+.modal-single-container:active{cursor:grabbing}
+.modal-single-container img{
+    max-width:100%;max-height:80vh;object-fit:contain;transition:transform .05s linear;
+}
+
+/* Hold toggle overlay hint */
+.hold-hint-badge{
+    position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+    background:rgba(9,9,11,.85);border:1px solid rgba(255,255,255,.15);
+    padding:6px 16px;border-radius:20px;font-size:12px;color:#a1a1aa;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none;
+    display:flex;align-items:center;gap:8px;
+}
+.hold-hint-badge kbd{
+    background:#27272a;border:1px solid #3f3f46;color:#ffffff;
+    padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+
+/* Modal Footer */
+.img-modal-footer{
+    background:#18181b;border-top:1px solid #27272a;padding:6px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;color:#71717a;font-family:'JetBrains Mono',monospace;user-select:none;
+}
+.footer-info-item span{color:#47A3FF}
 """
 
 gallery_js = r"""
@@ -1183,6 +1367,330 @@ function watchOutputs() {
 
     if (!resultContainer || !outBody) { setTimeout(watchOutputs, 500); return; }
 
+    /* Inject Output Zoom Badge into outBody if not present */
+    let zoomBadge = outBody.querySelector('.out-zoom-badge');
+    if (!zoomBadge) {
+        zoomBadge = document.createElement('div');
+        zoomBadge.className = 'out-zoom-badge';
+        zoomBadge.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Click to Zoom &amp; Compare';
+        outBody.appendChild(zoomBadge);
+    }
+
+    /* Modal DOM Creation & Setup */
+    let modalOverlay = document.getElementById('image-zoom-modal');
+    if (!modalOverlay) {
+        modalOverlay = document.createElement('div');
+        modalOverlay.id = 'image-zoom-modal';
+        modalOverlay.className = 'img-modal-overlay';
+        modalOverlay.innerHTML = `
+        <div class="img-modal-card">
+            <div class="img-modal-header">
+                <div class="modal-header-left">
+                    <div class="modal-title">
+                        <span>Image Zoom &amp; Compare</span>
+                        <span class="modal-title-badge" id="modal-dim-badge">High Res</span>
+                    </div>
+                </div>
+                <div class="modal-tabs">
+                    <button class="modal-tab-btn active" data-mode="split">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg> Split Slider
+                    </button>
+                    <button class="modal-tab-btn" data-mode="side">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg> Side-by-Side
+                    </button>
+                    <button class="modal-tab-btn" data-mode="output">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Generated (Zoom)
+                    </button>
+                    <button class="modal-tab-btn" data-mode="original">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Original Input
+                    </button>
+                </div>
+                <div class="modal-header-right">
+                    <select id="modal-orig-select" class="modal-orig-select" style="display:none;"></select>
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="modal-zoom-out" title="Zoom Out">-</button>
+                        <button class="zoom-btn zoom-text-btn" id="modal-zoom-val" title="Current Zoom">100%</button>
+                        <button class="zoom-btn" id="modal-zoom-in" title="Zoom In">+</button>
+                        <button class="zoom-btn zoom-text-btn" id="modal-zoom-reset" title="Reset Zoom/Pan">Fit</button>
+                    </div>
+                    <button class="modal-close-btn" id="modal-close" title="Close (Esc)">&#2715;</button>
+                </div>
+            </div>
+            <div class="img-modal-body" id="modal-body"></div>
+            <div class="img-modal-footer">
+                <div class="footer-info-item">Mode: <span id="modal-footer-mode">Split Slider</span></div>
+                <div class="footer-info-item">Scroll to Zoom &bull; Drag to Pan &bull; Press <kbd style="background:#27272a;padding:1px 5px;border-radius:3px;color:#fff;">Esc</kbd> to Close &bull; Hold <kbd style="background:#27272a;padding:1px 5px;border-radius:3px;color:#fff;">Space</kbd> to Quick-Compare</div>
+                <div class="footer-info-item">Zoom: <span id="modal-footer-zoom">100%</span></div>
+            </div>
+        </div>
+        `;
+        document.body.appendChild(modalOverlay);
+    }
+
+    /* Modal state */
+    let currentMode = 'split';
+    let currentScale = 1.0;
+    let panX = 0;
+    let panY = 0;
+    let splitPercent = 50;
+    let isDraggingPan = false;
+    let isDraggingSplit = false;
+    let startX = 0;
+    let startY = 0;
+    let genImageSrc = '';
+    let origImageSrcs = [];
+    let activeOrigIdx = 0;
+    let spaceHoldActive = false;
+
+    function openModal() {
+        const genImg = outBody.querySelector('img.modern-out-img');
+        if (!genImg || !genImg.src) return;
+        genImageSrc = genImg.src;
+
+        const uploaded = window.__uploadedImages || [];
+        origImageSrcs = uploaded.map(item => item.b64).filter(Boolean);
+        if (origImageSrcs.length === 0) {
+            origImageSrcs = [genImageSrc];
+        }
+        activeOrigIdx = 0;
+
+        const origSelect = document.getElementById('modal-orig-select');
+        if (origSelect) {
+            if (origImageSrcs.length > 1) {
+                origSelect.style.display = 'block';
+                origSelect.innerHTML = origImageSrcs.map((_, i) => `<option value="${i}">Input Image #${i+1}</option>`).join('');
+                origSelect.value = activeOrigIdx;
+            } else {
+                origSelect.style.display = 'none';
+            }
+        }
+
+        currentScale = 1.0;
+        panX = 0;
+        panY = 0;
+        splitPercent = 50;
+        currentMode = 'split';
+
+        const dimBadge = document.getElementById('modal-dim-badge');
+        if (dimBadge) {
+            if (genImg.naturalWidth && genImg.naturalHeight) {
+                dimBadge.textContent = `${genImg.naturalWidth} x ${genImg.naturalHeight}`;
+            } else {
+                dimBadge.textContent = 'High Res';
+            }
+        }
+
+        renderModalView();
+        modalOverlay.classList.add('active');
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener('keyup', handleKeyUp);
+    }
+
+    function getOrigSrc() {
+        return origImageSrcs[activeOrigIdx] || genImageSrc;
+    }
+
+    function updateTransform() {
+        const container = document.getElementById('modal-body');
+        if (!container) return;
+
+        const zoomValEl = document.getElementById('modal-zoom-val');
+        const footerZoomEl = document.getElementById('modal-footer-zoom');
+        const zoomPct = Math.round(currentScale * 100) + '%';
+        if (zoomValEl) zoomValEl.textContent = zoomPct;
+        if (footerZoomEl) footerZoomEl.textContent = zoomPct;
+
+        if (currentMode === 'split') {
+            const wrap = container.querySelector('.split-view-wrapper');
+            if (wrap) wrap.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+            const overlayWrap = container.querySelector('.split-img-overlay-wrap');
+            if (overlayWrap) overlayWrap.style.width = splitPercent + '%';
+        } else if (currentMode === 'side') {
+            container.querySelectorAll('.side-pane-body img').forEach(img => {
+                img.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+            });
+        } else if (currentMode === 'output' || currentMode === 'original') {
+            const img = container.querySelector('.modal-single-container img');
+            if (img) img.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+        }
+    }
+
+    function renderModalView() {
+        const body = document.getElementById('modal-body');
+        const footerMode = document.getElementById('modal-footer-mode');
+        if (!body) return;
+
+        document.querySelectorAll('.modal-tab-btn').forEach(btn => {
+            if (btn.dataset.mode === currentMode) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        const origSrc = getOrigSrc();
+        const displayGenSrc = spaceHoldActive ? origSrc : genImageSrc;
+        const displayOrigSrc = spaceHoldActive ? genImageSrc : origSrc;
+
+        if (currentMode === 'split') {
+            if (footerMode) footerMode.textContent = 'Split Comparison Slider';
+            body.innerHTML = `
+            <div class="modal-split-container">
+                <div class="split-view-wrapper">
+                    <img class="split-img-base" src="${origSrc}" alt="Original" />
+                    <div class="split-img-overlay-wrap" style="width: ${splitPercent}%;">
+                        <img class="split-img-overlay" src="${genImageSrc}" alt="Generated" />
+                        <div class="split-divider-handle">&#8646;</div>
+                    </div>
+                    <div class="split-tag left">Generated</div>
+                    <div class="split-tag right">Original</div>
+                </div>
+            </div>`;
+
+            const baseImg = body.querySelector('.split-img-base');
+            const overImg = body.querySelector('.split-img-overlay');
+            const syncSize = () => {
+                if (baseImg && overImg) {
+                    overImg.style.width = baseImg.clientWidth + 'px';
+                    overImg.style.height = baseImg.clientHeight + 'px';
+                }
+            };
+            if (baseImg.complete) syncSize();
+            else baseImg.onload = syncSize;
+
+        } else if (currentMode === 'side') {
+            if (footerMode) footerMode.textContent = 'Side-by-Side Comparison';
+            body.innerHTML = `
+            <div class="modal-side-container">
+                <div class="side-pane">
+                    <div class="side-pane-header">📷 Original Input Image</div>
+                    <div class="side-pane-body"><img src="${origSrc}" alt="Original" /></div>
+                </div>
+                <div class="side-pane">
+                    <div class="side-pane-header">🖼️ Generated Output Image</div>
+                    <div class="side-pane-body"><img src="${genImageSrc}" alt="Generated" /></div>
+                </div>
+            </div>`;
+        } else if (currentMode === 'output') {
+            if (footerMode) footerMode.textContent = 'Generated Output (Zoom View)';
+            body.innerHTML = `
+            <div class="modal-single-container">
+                <img src="${displayGenSrc}" alt="Generated" />
+                <div class="hold-hint-badge">Hold <kbd>Space</kbd> to toggle Original</div>
+            </div>`;
+        } else if (currentMode === 'original') {
+            if (footerMode) footerMode.textContent = 'Original Input (Zoom View)';
+            body.innerHTML = `
+            <div class="modal-single-container">
+                <img src="${displayOrigSrc}" alt="Original" />
+                <div class="hold-hint-badge">Hold <kbd>Space</kbd> to toggle Generated</div>
+            </div>`;
+        }
+
+        updateTransform();
+    }
+
+    const closeBtn = document.getElementById('modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+    });
+
+    document.querySelectorAll('.modal-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentMode = btn.dataset.mode;
+            currentScale = 1.0; panX = 0; panY = 0;
+            renderModalView();
+        });
+    });
+
+    const origSelectEl = document.getElementById('modal-orig-select');
+    if (origSelectEl) {
+        origSelectEl.addEventListener('change', (e) => {
+            activeOrigIdx = parseInt(e.target.value) || 0;
+            renderModalView();
+        });
+    }
+
+    const zoomInBtn = document.getElementById('modal-zoom-in');
+    const zoomOutBtn = document.getElementById('modal-zoom-out');
+    const zoomResetBtn = document.getElementById('modal-zoom-reset');
+
+    if (zoomInBtn) zoomInBtn.addEventListener('click', () => { currentScale = Math.min(8.0, currentScale * 1.25); updateTransform(); });
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => { currentScale = Math.max(0.2, currentScale / 1.25); updateTransform(); });
+    if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => { currentScale = 1.0; panX = 0; panY = 0; updateTransform(); });
+
+    const modalBodyEl = document.getElementById('modal-body');
+    if (modalBodyEl) {
+        modalBodyEl.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY < 0 ? 1.15 : 0.85;
+            currentScale = Math.min(8.0, Math.max(0.2, currentScale * delta));
+            updateTransform();
+        }, { passive: false });
+
+        modalBodyEl.addEventListener('mousedown', (e) => {
+            if (e.target.closest('#modal-close') || e.target.closest('.modal-tab-btn')) return;
+            const divider = e.target.closest('.split-divider-handle') || e.target.closest('.split-img-overlay-wrap');
+            if (currentMode === 'split' && (divider || e.shiftKey)) {
+                isDraggingSplit = true;
+            } else {
+                isDraggingPan = true;
+                startX = e.clientX - panX;
+                startY = e.clientY - panY;
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDraggingSplit && currentMode === 'split') {
+                const container = modalBodyEl.querySelector('.split-view-wrapper');
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    let offsetX = e.clientX - rect.left;
+                    let pct = (offsetX / rect.width) * 100;
+                    splitPercent = Math.max(0, Math.min(100, pct));
+                    updateTransform();
+                }
+            } else if (isDraggingPan) {
+                panX = e.clientX - startX;
+                panY = e.clientY - startY;
+                updateTransform();
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDraggingPan = false;
+            isDraggingSplit = false;
+        });
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === 'Escape') closeModal();
+        else if (e.code === 'Space' && !spaceHoldActive && (currentMode === 'output' || currentMode === 'original')) {
+            e.preventDefault();
+            spaceHoldActive = true;
+            renderModalView();
+        }
+    }
+
+    function handleKeyUp(e) {
+        if (e.code === 'Space' && spaceHoldActive) {
+            spaceHoldActive = false;
+            renderModalView();
+        }
+    }
+
+    outBody.addEventListener('click', (e) => {
+        const img = outBody.querySelector('img.modern-out-img');
+        if (img && img.src && (e.target === img || e.target.closest('.out-zoom-badge'))) {
+            openModal();
+        }
+    });
+
     if (dlBtn) {
         dlBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1233,6 +1741,7 @@ function watchOutputs() {
             if (existing.src !== resultImg.src) {
                 existing.src = resultImg.src;
                 if (dlBtn) dlBtn.classList.add('visible');
+                if (zoomBadge) zoomBadge.classList.add('visible');
                 if (window.__hideLoader) window.__hideLoader();
             }
         }
