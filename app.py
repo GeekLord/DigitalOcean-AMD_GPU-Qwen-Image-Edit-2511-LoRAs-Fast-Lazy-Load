@@ -1186,9 +1186,20 @@ function watchOutputs() {
             e.stopPropagation();
             const img = outBody.querySelector('img.modern-out-img');
             if (img && img.src) {
+                let downloadName = 'qwen_edit_output.png';
+                const uploaded = window.__uploadedImages;
+                if (uploaded && uploaded.length > 0 && uploaded[0].name) {
+                    const rawName = uploaded[0].name;
+                    const lastDot = rawName.lastIndexOf('.');
+                    const baseName = lastDot > 0 ? rawName.substring(0, lastDot) : rawName;
+                    downloadName = baseName + '.png';
+                }
                 const a = document.createElement('a');
-                a.href = img.src; a.download = 'qwen_edit_output.png';
-                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                a.href = img.src;
+                a.download = downloadName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
         });
     }
