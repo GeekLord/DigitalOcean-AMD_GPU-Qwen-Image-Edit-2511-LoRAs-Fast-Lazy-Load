@@ -1,164 +1,129 @@
-# **[Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load](https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast)**
+# Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load
 
-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load is an experimental, high-performance image editing and style-transfer platform built on top of the `Qwen/Qwen-Image-Edit-2509` base model and an optimized transformer architecture (`prithivMLmods/Qwen-Image-Edit-Rapid-AIO-V4`). The application integrates Flash Attention 3 (`QwenDoubleStreamAttnProcessorFA3`) to achieve low VRAM footprints and accelerated 4-step image manipulation.
+Prompt-driven image editing on top of [Qwen-Image-Edit-2511](https://huggingface.co/Qwen/Qwen-Image-Edit-2511), running in four sampling steps with twenty LoRA styles that download the first time you pick them and stay in memory after that.
 
-Using a **Lazy Loading** design for LoRA adapters, the system dynamically downloads and fuses task-specific adapters on demand—including Photo-to-Anime, Multiple Angles, Light Restoration, Relight, Multi-Angle Lighting, Edit Skin, Next Scene, Flat Log, and Upscaling. The web workspace is wrapped in a custom, dark-mode Gradio interface featuring client-side JavaScript gallery management, drag-and-drop file uploaders, live toast notifications, and fast prompt chips.
+The pipeline pairs the 2511 base model with the `prithivMLmods/Qwen-Image-Edit-Rapid-AIO-V19` transformer and, where the hardware supports it, a Flash Attention 3 processor. Nothing is preloaded except the base model, so startup does not wait on adapter weights you may never use. Runs on NVIDIA (CUDA 13) and on AMD Instinct through ROCm, including MI300X droplets on DigitalOcean.
+
+Live demo: [prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast](https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast)
 
 <img width="1714" height="1596" alt="image" src="https://github.com/user-attachments/assets/7c665c83-d5a0-492a-9ede-074382c6c46a" />
 
-### **Key Features**
+## Editing styles
 
-* **Lazy-Loaded Adapter Registry:** On-demand downloading and weight-fusing for specialized LoRA adapters (e.g., *Passport-Photo*, *Photo-to-Anime*, *Multiple-Angles*, *Light-Restoration*, *Relight*, *Multi-Angle-Lighting*, *Edit-Skin*, *Next-Scene*, *Flat-Log*, *Upscale-Image*, *Upscale2K*, and *Dotted-Illustration*).
-* **Passport Photo Preset:** Engineered to transform low-quality, blurry, angled, or poorly lit portrait images into standardized, high-quality passport-compatible photos with uniform studio background, front-facing pose, and exact facial identity preservation.
-* **Flash Attention 3 (FA3) Acceleration:** Hooks natively into the `QwenDoubleStreamAttnProcessorFA3` processor layer to accelerate cross-attention inference phases while reducing active GPU memory consumption.
-* **Text-Guided Image Editing:** Offers camera angle rotations, shadow removal, uniform studio relighting, skin detail refinement, scene propagation, and 4K upscaling.
-* **Polished Dark-Mode Interface:** A modern web UI with custom JavaScript event listeners, drag-and-drop file uploaders, live toast notifications, and animated status indicators.
-* **Smart Aspect Ratio Snapping:** Automatically resizes uploaded images to stay within 1024px while snapping width and height to multiples of 8 to prevent shape mismatch errors during inference.
+Every entry below is a LoRA in the registry (`ADAPTER_SPECS` in `app.py`). Pick one from the dropdown, and the weights are pulled from the Hub on first use, fused into the transformer, and cached for the rest of the session.
 
-### **Repository Structure**
+| Style | Adapter repository | Weights file |
+| --- | --- | --- |
+| Multiple-Angles | `dx8152/Qwen-Edit-2509-Multiple-angles` | `镜头转换.safetensors` |
+| Fal-Multiple-Angles | `fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA` | `qwen-image-edit-2511-multiple-angles-lora.safetensors` |
+| Photo-to-Anime | `autoweeb/Qwen-Image-Edit-2509-Photo-to-Anime` | `Qwen-Image-Edit-2509-Photo-to-Anime_000001000.safetensors` |
+| Anime-V2 | `prithivMLmods/Qwen-Image-Edit-2511-Anime` | `Qwen-Image-Edit-2511-Anime-2000.safetensors` |
+| Anything2Real | `lrzjason/Anything2Real_2601` | `anything2real_2601.safetensors` |
+| Hyper-Realistic-Portrait | `prithivMLmods/Qwen-Image-Edit-2511-Hyper-Realistic-Portrait` | `HRP_20.safetensors` |
+| Ultra-Realistic-Portrait | `prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait` | `URP_20.safetensors` |
+| Pixar-Inspired-3D | `prithivMLmods/Qwen-Image-Edit-2511-Pixar-Inspired-3D` | `PI3_20.safetensors` |
+| Noir-Comic-Book | `prithivMLmods/Qwen-Image-Edit-2511-Noir-Comic-Book-Panel` | `Noir-Comic-Book-Panel_20.safetensors` |
+| Manga-Tone | `nappa114514/Qwen-Image-Edit-2509-Manga-Tone` | `tone001.safetensors` |
+| Polaroid-Photo | `prithivMLmods/Qwen-Image-Edit-2511-Polaroid-Photo` | `Qwen-Image-Edit-2511-Polaroid-Photo.safetensors` |
+| Midnight-Noir-Eyes-Spotlight | `prithivMLmods/Qwen-Image-Edit-2511-Midnight-Noir-Eyes-Spotlight` | `Qwen-Image-Edit-2511-Midnight-Noir-Eyes-Spotlight.safetensors` |
+| Style-Transfer | `zooeyy/Style-Transfer` | `Style Transfer-Alpha-V0.1.safetensors` |
+| Light-Migration | `dx8152/Qwen-Edit-2509-Light-Migration` | `参考色调.safetensors` |
+| Any-light | `lilylilith/QIE-2511-MP-AnyLight` | `QIE-2511-AnyLight_.safetensors` |
+| Studio-DeLight | `prithivMLmods/QIE-2511-Studio-DeLight` | `QIE-2511-Studio-DeLight-5000.safetensors` |
+| Cinematic-FlatLog | `prithivMLmods/QIE-2511-Cinematic-FlatLog-Control` | `QIE-2511-Cinematic-FlatLog-Control-3200.safetensors` |
+| Passport-Photo | `prithivMLmods/QIE-2511-Studio-DeLight` | `QIE-2511-Studio-DeLight-5000.safetensors` |
+| Upscaler | `starsfriday/Qwen-Image-Edit-2511-Upscale2K` | `qwen_image_edit_2511_upscale.safetensors` |
+| Unblur-Anything | `prithivMLmods/Qwen-Image-Edit-2511-Unblur-Upscale` | `Qwen-Image-Edit-Unblur-Upscale_15.safetensors` |
+
+Several styles read more than one input. Style-Transfer takes the source in slot 1 and the reference in slot 2. Any-light and Light-Migration copy lighting or color tone from the second image onto the first.
+
+Passport-Photo reuses the Studio-DeLight weights and adds handling of its own: unless your prompt already says "passport", the app appends a suffix asking for a 3.5:4.5 medium shot with headroom, a plain neutral studio background, uniform lighting, and preserved facial identity and hair, then forces the output to 784x1008 instead of matching the input aspect ratio.
+
+## How the lazy loading works
+
+`infer()` looks up the selected style, and if its adapter name is not in `LOADED_ADAPTERS` yet it calls `pipe.load_lora_weights(...)`, records the name, and activates it with `pipe.set_adapters([name], adapter_weights=[1.0])`. Repeat runs on the same style skip straight to activation. A spec can declare `fallback_repo` and `fallback_weights`, which the loader tries if the primary repository fails.
+
+Attention and precision are decided at startup. The app tries to install `QwenDoubleStreamAttnProcessorFA3` and prints a warning while keeping the default processor if that fails, which is what happens on hardware without an FA3 build. Weights load in bfloat16 when the GPU reports support, float16 on other accelerators, and float32 on CPU.
+
+## Interface
+
+The UI is a single Gradio page with custom HTML, CSS, and JavaScript rather than stock components. Images live in a client-side gallery: drop files on the canvas or click to browse, and each thumbnail carries an index badge and its own remove button, with Remove and Clear All in the toolbar. Base64 payloads are passed to the pipeline through a hidden textbox.
+
+Results open in a viewer with four tabs:
+
+- Split Slider, with a draggable divider over the original
+- Side-by-Side
+- Generated (Zoom)
+- Original Input, with a picker when you uploaded more than one image
+
+Scroll to zoom, drag to pan, hold Space to swap the two images for a quick A/B, press Esc to close. The header shows the output's pixel dimensions, and Save writes a PNG named after your first uploaded file.
+
+Seventeen quick prompt chips fill the prompt box in one click, and twenty example cards load a full setup: images, prompt, and matching style. Thumbnails for those cards are generated at startup and inlined as base64.
+
+Advanced settings expose seed (0 to 2147483647), a randomize toggle that is on by default, guidance from 1 to 10, and steps from 1 to 50. Defaults are 4 steps and guidance 1.0, which is what the Rapid-AIO transformer is tuned for.
+
+Input images are resized so the longest side is 1024 and both dimensions land on multiples of 8, which keeps the latent shapes valid. Passport-Photo overrides this with its fixed 784x1008.
+
+## Repository layout
 
 ```text
-├── examples/
-│   ├── 1.jpg
-│   ├── 10.jpeg
-│   ├── 11.jpg
-│   ├── 12.jpg
-│   ├── 13.jpg
-│   ├── 14.jpg
-│   ├── 2.jpeg
-│   ├── 4.jpg
-│   ├── 5.jpg
-│   ├── 6.jpg
-│   ├── 7.jpg
-│   ├── 8.jpg
-│   ├── 9.jpg
-│   ├── DI.jpg
-│   └── ELS.jpg
+├── examples/                          # 26 sample images used by the example cards
 ├── qwenimage/
 │   ├── __init__.py
 │   ├── pipeline_qwenimage_edit_plus.py
 │   ├── qwen_fa3_processor.py
 │   └── transformer_qwenimage.py
-├── app.py
-├── LICENSE
+├── app.py                             # pipeline, adapter registry, and the whole UI
+├── digitalocean_startup.sh            # cloud-init script for MI300X droplets
 ├── pre-requirements.txt
+├── requirements.txt                   # CUDA 13 stack
+├── requirements-rocm.txt              # ROCm 6.2 stack
 ├── pyproject.toml
-├── README.md
-├── requirements.txt
-└── uv.lock
-
+├── uv.lock
+├── LICENSE
+└── README.md
 ```
 
-### **Installation and Requirements**
+## Requirements
 
-To set up the Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load environment locally, configure your system according to the specifications below. A modern CUDA-enabled GPU is required.
+A GPU with enough VRAM for the 2511 transformer, either CUDA or ROCm. The code falls back to CPU float32, which is not practical for real use.
 
-* **Python Version:** Minimum Python **3.10** is required; Python **3.12** or **3.14** is recommended.
-* **PyTorch Version:** `torch==2.11.0` or above is required for better compatibility.
-* **CUDA Version:** CUDA **13.0** is recommended (`--extra-index-url` [https://download.pytorch.org/whl/cu130](https://download.pytorch.org/whl/cu130)), matching the environment used on the live Hugging Face demo.
+Python 3.14 or newer if you install with `uv`, since that is what `pyproject.toml` pins. The pip route is looser in practice, though the CUDA wheels in `requirements.txt` target `torch==2.11.0` on the cu130 index.
 
-#### **Running with `uv` (Recommended)**
+## Install with uv
 
-`uv` is an ultra-fast Python package and project manager written in Rust. It ensures rapid virtual environment setup and exact dependency synchronization based on the `uv.lock` file.
+[`uv`](https://docs.astral.sh/uv/) resolves the environment from `uv.lock`, so you get the same versions the lockfile was built with.
 
-**Step 1 — Install `uv`**
+Install uv on macOS or Linux:
 
-* **macOS / Linux:** `curl -LsSf https://astral.sh/uv/install.sh | sh`
-* **Windows:** `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-**Step 2 — Clone the repository**
+On Windows:
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Then clone, sync, and run:
 
 ```bash
 git clone https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git
-cd Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load
-
-```
-
-**Step 3 — Initialize the project and install dependencies**
-
-```bash
+cd DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load
 uv sync
-
-```
-
-**Step 4 — Run the script**
-
-```bash
 uv run app.py
-
 ```
 
-#### **Standard PIP Installation**
-
-**1. Update Package Manager**
-Upgrade your local package manager:
+## Install with pip (CUDA)
 
 ```bash
-pip install pip>=26.1.2
-
-```
-
-**2. Install Core Dependencies**
-Install the primary deep learning stack, transformer libraries, and core computing utilities listed in `requirements.txt`:
-
-```bash
+pip install "pip>=26.1.2"
 pip install -r requirements.txt
-
-```
-
-#### **AMD MI300X GPU / ROCm Installation (DigitalOcean AMD GPU)**
-
-The project is fully compatible with AMD Instinct GPUs (including **MI300X 192GB VRAM** on DigitalOcean GPU Droplets) running PyTorch with ROCm.
-
-##### **Option A: 1-Click Automated Droplet Setup (DigitalOcean User Data)**
-
-When creating a new **MI300X GPU Droplet** in the DigitalOcean Control Panel:
-1. Expand **Advanced Options** at the bottom of the Droplet creation page.
-2. Check **User Data**.
-3. Paste the contents of [`digitalocean_startup.sh`](file:///h:/AI/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load/digitalocean_startup.sh) into the text box.
-4. Click **Create Droplet**.
-
-The Droplet will automatically install ROCm PyTorch, clone the repository, open port `7860`, set up systemd auto-restart, and launch the server. Within ~2-3 minutes, open your browser to:
-`http://<YOUR_DIGITALOCEAN_PUBLIC_IP>:7860/`
-
----
-
-##### **Option B: Manual Setup**
-
-**1. Create Virtual Environment & Upgrade PIP**
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-```
-
-**2. Install ROCm PyTorch & Dependencies**
-Uninstall any default CUDA PyTorch packages, install ROCm PyTorch, then install the remaining project dependencies:
-```bash
-pip uninstall -y torch torchvision
-pip install torch torchvision --index-url https://download.pytorch.org/whl/rocm6.2
-pip install -r requirements-rocm.txt
-```
-
-**3. Allow Port 7860 in Firewall (DigitalOcean)**
-If UFW firewall is active on your DigitalOcean Linux instance, open port 7860:
-```bash
-sudo ufw allow 7860/tcp
-```
-
-**4. Launch Application on Public IP**
-`app.py` is configured to bind to `0.0.0.0:7860` by default so it is accessible via your droplet's public IP:
-```bash
-# Optional: Store model weights on DigitalOcean's 5 TB scratch NVMe disk
-export HF_HOME=/mnt/scratch/hf_cache
-
 python app.py
 ```
 
-Once launched, access the web workspace in your browser at:
-`http://<YOUR_DIGITALOCEAN_PUBLIC_IP>:7860/`
-
-#### **Core Requirements List (`requirements.txt` - CUDA)**
+`requirements.txt` pulls torch and torchvision from the CUDA 13 index:
 
 ```text
 --extra-index-url https://download.pytorch.org/whl/cu130
@@ -173,22 +138,61 @@ av==17.1.0
 spaces==0.51.1
 huggingface-hub==1.24.0
 kernels==0.16.0
-
 ```
 
-### **Usage**
+## AMD MI300X and ROCm on DigitalOcean
 
-Once the web deployment initializes, open your browser to the output URL in your terminal (typically `http://127.0.0.1:7860/` for local runs, or `http://<YOUR_DIGITALOCEAN_PUBLIC_IP>:7860/` for cloud instances).
+### Automated droplet setup
 
-1. **Upload Asset:** Drag and drop an image into the upload drop-zone (or click the preview window to replace the image).
-2. **Select Style / LoRA:** Choose your target editing task from the **Editing Style / LoRA** dropdown menu. The adapter weights will download lazily on first use.
-3. **Refine Instructions:** Type your instructions inside the prompt field, or click one of the **Quick Prompts** chips to instantly fill it.
-4. **Advanced Settings (Optional):** Expand the Advanced Settings panel to toggle seed randomization, scale structural guidance metrics, or adjust sampling steps.
-5. **Execute:** Click the **Edit Image** button (with the thunderbolt icon). The interface loader will blur the screen while the pipeline processes, displaying the final image upon completion.
+When you create an MI300X GPU Droplet, expand Advanced Options, check User Data, and paste the contents of [`digitalocean_startup.sh`](digitalocean_startup.sh).
 
+The script installs build tools, opens ports 22 and 7860 in UFW, creates `/mnt/scratch/hf_cache` on the scratch NVMe, clones this repository to `/opt/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load`, builds a venv with ROCm PyTorch, and registers a `qwen-image-edit` systemd service with `Restart=always`. Progress is logged to `/var/log/qwen-startup.log`. After a few minutes the app answers on `http://<DROPLET_PUBLIC_IP>:7860/`.
 
-### **Links and Source**
+### Manual setup
 
-* **GitHub Repository:** [https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git](https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load.git)
-* **Hugging Face Live Space:** [https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast](https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast)
-* **License:** [Apache License 2.0](https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load/blob/main/LICENSE)
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+
+pip uninstall -y torch torchvision
+pip install torch torchvision --index-url https://download.pytorch.org/whl/rocm6.2
+pip install -r requirements-rocm.txt
+```
+
+Open the port if UFW is active:
+
+```bash
+sudo ufw allow 7860/tcp
+```
+
+Point the Hub cache at the scratch disk so adapter downloads do not fill the root volume, then start the app:
+
+```bash
+export HF_HOME=/mnt/scratch/hf_cache
+python app.py
+```
+
+`requirements-rocm.txt` pins `torch==2.5.1+rocm6.2` and `torchvision==0.20.1+rocm6.2` and leaves out `kernels`. Expect the FA3 warning on this stack; the app keeps running with the default attention processor.
+
+## Serving and network exposure
+
+`app.py` binds `GRADIO_SERVER_NAME` (default `0.0.0.0`) on `GRADIO_SERVER_PORT` (default `7860`), queues up to 50 requests, disables SSR, exposes the app as an MCP server, and calls `launch(share=True)`.
+
+Two things to know before you put this on a public host. The server listens on every interface and has no authentication, so anything that can reach port 7860 can run inference on your GPU. And `share=True` publishes a public `gradio.live` tunnel URL on every start, which stays reachable even if your firewall blocks 7860. If you would rather not have that, set `share=False`, put the app behind a reverse proxy or SSH tunnel, and add `auth=` to `launch()`.
+
+## Using the app
+
+1. Add images by dropping them on the canvas or clicking to browse. Order matters for the multi-image styles: the edit target goes in slot 1, the reference in slot 2.
+2. Choose a style from the Editing Style / LoRA dropdown. The first run on a new style downloads its weights.
+3. Write a prompt, or click a quick prompt chip. Example cards fill the images, prompt, and style together.
+4. Adjust seed, guidance, or steps under Advanced Settings if you want to. The 4-step default is the fast path.
+5. Click Edit Image. When the result lands, click it to open the compare viewer, or hit Save for a PNG.
+
+## Links
+
+- GitHub: [GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load](https://github.com/GeekLord/DigitalOcean-AMD_GPU-Qwen-Image-Edit-2511-LoRAs-Fast-Lazy-Load)
+- Hugging Face Space: [prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast](https://huggingface.co/spaces/prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast)
+- Base model: [Qwen/Qwen-Image-Edit-2511](https://huggingface.co/Qwen/Qwen-Image-Edit-2511)
+- Transformer: [prithivMLmods/Qwen-Image-Edit-Rapid-AIO-V19](https://huggingface.co/prithivMLmods/Qwen-Image-Edit-Rapid-AIO-V19)
+- License: [Apache 2.0](LICENSE)
