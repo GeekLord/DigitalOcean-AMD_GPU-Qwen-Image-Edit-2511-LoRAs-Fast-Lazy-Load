@@ -129,15 +129,15 @@ python app.py
 --extra-index-url https://download.pytorch.org/whl/cu130
 torch==2.11.0
 torchvision==0.26.0
-transformers==5.14.1
-accelerate==1.14.0
+transformers==5.23.0
+accelerate==1.15.0
 diffusers==0.39.0
 peft==0.19.1
-gradio==6.20.0
+gradio==6.32.0
 av==17.1.0
-spaces==0.51.1
-huggingface-hub==1.24.0
-kernels==0.16.0
+spaces==0.51.3
+huggingface-hub==1.33.0
+kernels==0.16.2
 ```
 
 ## AMD MI300X and ROCm on DigitalOcean
