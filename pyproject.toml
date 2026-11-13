@@ -5,17 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "accelerate==1.14.0",
+    "accelerate==1.15.0",
     "av==17.1.0",
     "diffusers==0.39.0",
-    "gradio==6.20.0",
-    "huggingface-hub==1.24.0",
-    "kernels==0.16.0",
+    "gradio==6.32.0",
+    "huggingface-hub==1.33.0",
+    "kernels==0.16.2",
     "peft==0.19.1",
-    "spaces==0.51.1",
+    "spaces==0.51.3",
     "torch",
     "torchvision",
-    "transformers==5.14.1",
+    "transformers==5.23.0",
 ]
 
 [[tool.uv.index]]
