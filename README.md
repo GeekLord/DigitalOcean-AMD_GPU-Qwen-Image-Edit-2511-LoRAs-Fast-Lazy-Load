@@ -118,7 +118,7 @@ uv run app.py
 ## Install with pip (CUDA)
 
 ```bash
-pip install "pip>=26.1.2"
+pip install "pip>=26.3"
 pip install -r requirements.txt
 python app.py
 ```
@@ -129,8 +129,8 @@ python app.py
 --extra-index-url https://download.pytorch.org/whl/cu130
 torch==2.11.0
 torchvision==0.26.0
-transformers==5.23.0
-accelerate==1.15.0
+transformers==5.24.0
+accelerate==1.16.0
 diffusers==0.39.0
 peft==0.19.1
 gradio==6.32.0
